@@ -1,5 +1,6 @@
 package com.example.chat_application.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -62,6 +63,18 @@ public class ChatActivity extends BaseActivity {
         );
         binding.chatRecyclerView.setAdapter(chatAdapter);
         database  = FirebaseFirestore.getInstance();
+    }
+
+    public void onInfoClicked(User user) {
+        Intent intent = new Intent(getApplicationContext(),ViewProfile.class);
+        Bundle extras = new Bundle();
+        extras.putString(Constants.KEY_NAME,user.name);
+        extras.putString(Constants.KEY_IMAGE,user.image);
+        //extras.putString(Constants.KEY_EMAIL,user.email);
+
+        intent.putExtras(extras);
+        startActivity(intent);
+        finish();
     }
 
     private  void sendMessage (){
@@ -170,6 +183,7 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void setListeners(){
+        binding.imageInfo.setOnClickListener(view -> onInfoClicked(receiverUser) );
         binding.imageBack.setOnClickListener(v -> onBackPressed() );
         binding.layoutSend.setOnClickListener(v -> sendMessage() );
     }
